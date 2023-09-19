@@ -3,6 +3,7 @@ package edu.yacoubi.softwaretesting.customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,7 +22,9 @@ public class CustomerRegistrationService {
         //  - 2.1 if yes return
         //  - 2.2 thrown an exception
         // 3. save customer
+
         String phoneNumber = request.getCustomer().getPhoneNumber();
+
         Optional<Customer> optionalCustomer = customerRepository
                 .selectCustomerByPhoneNumber(phoneNumber);
 
@@ -35,5 +38,9 @@ public class CustomerRegistrationService {
         }
 
         customerRepository.save(request.getCustomer());
+    }
+
+    public Iterable<Customer> getAllCustomers() {
+        return customerRepository.findAll();
     }
 }
