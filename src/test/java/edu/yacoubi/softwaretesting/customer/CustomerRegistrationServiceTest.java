@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -98,5 +99,40 @@ class CustomerRegistrationServiceTest {
         // and no more one
         // then(customerRepository).should().selectCustomerByPhoneNumber(phoneNumber);
         // then(customerRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    void itShouldThrowWhenPhoneNumberIsTaken() {
+        // Given a phone number and a customer
+        String phoneNumber = "000099";
+        Customer customer = new Customer(
+                UUID.randomUUID(),
+                "Maryam",
+                phoneNumber
+        );
+        Customer customerTwo = new Customer(
+                UUID.randomUUID(),
+                "John",
+                phoneNumber
+        );
+
+        // ... a request
+        CustomerRegistrationRequest request = new CustomerRegistrationRequest(customer);
+
+        // ... No customer with phone number passed
+        given(customerRepository.selectCustomerByPhoneNumber(phoneNumber))
+                .willReturn(Optional.of(customerTwo));
+
+        // When
+        // Then
+        assertThatThrownBy(
+                () -> underTest.registerNewCustomer(request))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining(
+                        String.format("phone number [%s] is taken", phoneNumber)
+                );
+
+        // Finally
+        then(customerRepository).should(never()).save(any(Customer.class));
     }
 }
