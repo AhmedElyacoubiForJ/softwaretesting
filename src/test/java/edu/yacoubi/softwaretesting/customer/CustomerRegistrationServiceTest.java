@@ -94,6 +94,8 @@ class CustomerRegistrationServiceTest {
         // Then
         then(customerRepository).should(never()).save(any());
         // or
+        // mock has one interaction with selectCustomerByPhoneNumber
+        // and no more one
         // then(customerRepository).should().selectCustomerByPhoneNumber(phoneNumber);
         // then(customerRepository).shouldHaveNoMoreInteractions();
     }
