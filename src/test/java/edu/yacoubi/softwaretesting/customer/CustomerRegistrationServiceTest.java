@@ -72,6 +72,35 @@ class CustomerRegistrationServiceTest {
     }
 
     @Test
+    void itShouldSaveNewCustomerWhenIdIsNull() {
+        // Given a phone number and a customer
+        String phoneNumber = "000099";
+        Customer customer = new Customer(
+                null,
+                "joe",
+                phoneNumber
+        );
+
+        // ... a request
+        CustomerRegistrationRequest request =
+                new CustomerRegistrationRequest(customer);
+
+        // ... No customer with phone number passed
+        given(customerRepository.selectCustomerByPhoneNumber(phoneNumber))
+                .willReturn(Optional.empty());
+
+        // When
+        underTest.registerNewCustomer(request);
+
+        // Then
+        then(customerRepository).should().save(customerArgumentCaptor.capture());
+        Customer customerArgumentCaptorValue = customerArgumentCaptor.getValue();
+        assertThat(customerArgumentCaptorValue)
+                .isEqualToIgnoringGivenFields(customer, "id");
+        assertThat(customerArgumentCaptorValue.getId()).isNotNull();
+    }
+
+    @Test
     void itShouldNotSaveCustomerWhenCustomerExists() {
         // Given a phone number and a customer
         String phoneNumber = "000099";
