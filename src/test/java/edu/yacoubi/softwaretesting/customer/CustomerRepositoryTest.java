@@ -58,12 +58,16 @@ class CustomerRepositoryTest {
     void itShouldNotSaveCustomerWhenNameIsNull() {
         // Given
         UUID id = UUID.randomUUID();
-        Customer customer = new Customer(id, null, "0000");
+        Customer customer = new Customer(
+                id,
+                null,
+                "0000"
+        );
 
         // When
         // Then
         assertThatThrownBy(() -> underTest.save(customer))
-                //.hasMessageContaining("not-null property references a null or transient value : edu.yacoubi.sotwaretesting.customer.Customer.name")
+                .hasMessageContaining("not-null property references a null or transient value : edu.yacoubi.softwaretesting.customer.Customer.name")
                 .isInstanceOf(DataIntegrityViolationException.class);
 
     }
@@ -73,7 +77,11 @@ class CustomerRepositoryTest {
         // Given
         UUID id = UUID.randomUUID();
         Customer customer =
-                new Customer(id, "joe", "0000");
+                new Customer(
+                        id,
+                        "joe",
+                        "0000"
+                );
 
         // When
         underTest.save(customer);
@@ -94,12 +102,16 @@ class CustomerRepositoryTest {
     void itShouldNotSaveCustomerWhenPhoneNumberIsNull() {
         // Given
         UUID id = UUID.randomUUID();
-        Customer customer = new Customer(id, "Alex", null);
+        Customer customer = new Customer(
+                id,
+                "Joe",
+                null
+        );
 
         // When
         // Then
         assertThatThrownBy(() -> underTest.save(customer))
-                .hasMessageContaining("not-null property references a null or transient value : edu.yacoubi.sotwaretesting.customer.Customer.phoneNumber")
+                .hasMessageContaining("not-null property references a null or transient value : edu.yacoubi.softwaretesting.customer.Customer.phoneNumber")
                 .isInstanceOf(DataIntegrityViolationException.class);
 
     }
