@@ -10,11 +10,12 @@ import org.mockito.MockitoAnnotations;
 import java.util.Optional;
 import java.util.UUID;
 
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 class CustomerRegistrationServiceTest {
     // test the class in isolation using a Mock for dependencies
@@ -67,5 +68,33 @@ class CustomerRegistrationServiceTest {
         then(customerRepository).should().save(customerArgumentCaptor.capture());
         Customer customerArgumentCaptorValue = customerArgumentCaptor.getValue();
         assertThat(customerArgumentCaptorValue).isEqualTo(customer);
+    }
+
+    @Test
+    void itShouldNotSaveCustomerWhenCustomerExists() {
+        // Given a phone number and a customer
+        String phoneNumber = "000099";
+        Customer customer = new Customer(
+                UUID.randomUUID(),
+                "Joe",
+                phoneNumber
+        );
+
+        // ... a request
+        CustomerRegistrationRequest request =
+                new CustomerRegistrationRequest(customer);
+
+        // ... an existing customer is returned
+        given(customerRepository.selectCustomerByPhoneNumber(phoneNumber))
+                .willReturn(Optional.of(customer));
+
+        // When
+        underTest.registerNewCustomer(request);
+
+        // Then
+        then(customerRepository).should(never()).save(any());
+        // or
+        // then(customerRepository).should().selectCustomerByPhoneNumber(phoneNumber);
+        // then(customerRepository).shouldHaveNoMoreInteractions();
     }
 }
