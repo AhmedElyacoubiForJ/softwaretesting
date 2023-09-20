@@ -26,7 +26,11 @@ class CustomerRepositoryTest {
         // Given
         UUID id = UUID.randomUUID();
         String phoneNumber = "0000";
-        Customer customer = new Customer(id,"joe", phoneNumber);
+        Customer customer = new Customer(
+                id,
+                "joe",
+                phoneNumber
+        );
 
         // When
         underTest.save(customer);
