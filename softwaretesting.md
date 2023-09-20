@@ -5,3 +5,7 @@
 
 ### Software Testing Tutorial
 * [Learn Unit Testing and Integration Testing](https://www.youtube.com/watch?v=Geq60OVyBPg)
+
+
+### intellij shortcuts
+* navigate between class and test class **Ctrl Shift T**
