@@ -116,6 +116,13 @@ public class Payment {
 
     @Override
     public int hashCode() {
-        return Objects.hash(paymentId, customerId, amount, currency, source, description);
+        return Objects.hash(
+                paymentId,
+                customerId,
+                amount,
+                currency,
+                source,
+                description
+        );
     }
 }

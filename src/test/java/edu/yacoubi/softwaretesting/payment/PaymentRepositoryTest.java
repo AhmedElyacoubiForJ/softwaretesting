@@ -28,8 +28,10 @@ class PaymentRepositoryTest {
                 null,
                 UUID.randomUUID(),
                 new BigDecimal("10.00"),
-                Currency.USD, "card123",
-                "Donation");
+                Currency.USD,
+                "card123",
+                "Donation"
+        );
         // When
         underTest.save(payment);
 
@@ -37,6 +39,9 @@ class PaymentRepositoryTest {
         Optional<Payment> paymentOptional = underTest.findById(paymentId);
         assertThat(paymentOptional)
                 .isPresent()
-                .hasValueSatisfying(p -> assertThat(p).isEqualTo(payment));
+                .hasValueSatisfying(p -> {
+                            assertThat(p).isEqualTo(payment);
+                        }
+                );
     }
 }
