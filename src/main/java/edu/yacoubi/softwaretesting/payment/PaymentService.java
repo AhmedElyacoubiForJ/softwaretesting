@@ -40,7 +40,7 @@ public class PaymentService {
 
         if (!isCustomerFound) {
             String message = String.format(
-                    "customer [%s] not found",
+                    "customer %s not found",
                     customerId
             );
             throw new IllegalStateException(message);
@@ -54,7 +54,7 @@ public class PaymentService {
 
         if (!isCurrencySupported) {
             String message = String.format(
-                    "currency [%s] not supported",
+                    "currency %s not supported",
                     payment.getCurrency()
             );
             throw new IllegalStateException(message);
@@ -72,7 +72,7 @@ public class PaymentService {
         // 4. if not debited throw
         if(!cardPaymentCharge.isCardDebited()) {
             String message = String.format(
-                    "Card not debited for customer [%s]",
+                    "Card not debited for customer %s",
                     customerId
             );
             throw new IllegalStateException(message);
