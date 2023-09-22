@@ -124,7 +124,7 @@ class PaymentServiceTest {
                 )
         );
 
-        // ... card is charged successfully
+        // ... card is not charged successfully
         given(cardPaymentCharger.chargeCard(
                 request.getPayment().getSource(),
                 request.getPayment().getAmount(),
@@ -143,5 +143,41 @@ class PaymentServiceTest {
         then(paymentRepository)
                 .should(never())
                 .save(any(Payment.class));
+    }
+
+    @Test
+    void itShouldNotChargeCardAndThrowWhenCurrencyNoSupported() {
+        // Given
+        UUID customerId = UUID.randomUUID();
+        // ... customer exists
+        given(customerRepository.findById(customerId))
+                .willReturn(Optional.of(mock(Customer.class)));
+
+        // ... payment request
+        Currency currency = Currency.EUR;
+        PaymentRequest request = new PaymentRequest(
+                new Payment(
+                        null,
+                        null,
+                        new BigDecimal("100.00"),
+                        currency,
+                        "card123xx",
+                        "Donation"
+                )
+        );
+
+        // When
+        assertThatThrownBy(
+                () -> underTest.chargeCard(customerId, request)
+        )
+                .hasMessageContaining("currency " + currency + " not supported")
+                .isInstanceOf(IllegalStateException.class);
+
+        // Then
+        // ... No interactions with cardPaymentCharger
+        then(cardPaymentCharger).shouldHaveNoInteractions();
+
+        // ... No interactions with paymentRepository
+        then(paymentRepository).shouldHaveNoInteractions();
     }
 }

@@ -2,5 +2,6 @@ package edu.yacoubi.softwaretesting.payment;
 
 public enum Currency {
     USD,
-    GBP
+    GBP,
+    EUR
 }
