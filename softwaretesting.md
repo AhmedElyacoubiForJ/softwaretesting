@@ -2,9 +2,11 @@
 *  [AssetJ Documentation](https://assertj.github.io/doc/)
 *  [Mockito documentation](https://javadoc.io/doc/org.mockito/mockito-core/latest/index.html)
 
-
 ### Software Testing Tutorial
 * [Learn Unit Testing and Integration Testing](https://www.youtube.com/watch?v=Geq60OVyBPg)
+
+### Stripe API documentation
+*  [API Reference](https://stripe.com/docs/api)
 
 ### Stripe payment integration Tutorial
 *  [Live Coding](https://www.youtube.com/watch?v=BIDNKRluql4&t=568s)
