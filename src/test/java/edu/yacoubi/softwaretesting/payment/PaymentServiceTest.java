@@ -180,4 +180,25 @@ class PaymentServiceTest {
         // ... No interactions with paymentRepository
         then(paymentRepository).shouldHaveNoInteractions();
     }
+
+    @Test
+    void itShouldNotChargeAndThrowWhenCustomerNotFound() {
+        // Given
+        UUID customerId = UUID.randomUUID();
+        // ... customer not found in db
+        given(customerRepository.findById(customerId))
+                .willReturn(Optional.empty());
+
+        // When
+        assertThatThrownBy(
+                () -> underTest.chargeCard(customerId, new PaymentRequest(new Payment()))
+        )
+                .hasMessageContaining("customer " + customerId +" not found")
+                .isInstanceOf(IllegalStateException.class);
+
+        // Then
+        // ... No interactions with cardPaymentCharger nor paymentRepository
+        then(cardPaymentCharger).shouldHaveNoInteractions();
+        then(paymentRepository).shouldHaveNoInteractions();
+    }
 }
