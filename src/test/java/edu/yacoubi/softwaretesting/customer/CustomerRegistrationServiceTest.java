@@ -2,10 +2,11 @@ package edu.yacoubi.softwaretesting.customer;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -18,6 +19,7 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+@ExtendWith(MockitoExtension.class)
 class CustomerRegistrationServiceTest {
     // test the class in isolation using a Mock for dependencies
     // and classes that already tested
@@ -31,7 +33,6 @@ class CustomerRegistrationServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
         underTest = new CustomerRegistrationService(customerRepository);
     }
 

@@ -4,9 +4,10 @@ import edu.yacoubi.softwaretesting.customer.Customer;
 import edu.yacoubi.softwaretesting.customer.CustomerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -22,6 +23,7 @@ import static org.mockito.Mockito.never;
 
 // testing scenarios from bottom to top
 // equivalent to the service implementation
+@ExtendWith(MockitoExtension.class)
 class PaymentServiceTest {
 
     @Mock
@@ -37,7 +39,6 @@ class PaymentServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
         underTest = new PaymentService(
                 customerRepository,
                 paymentRepository,
