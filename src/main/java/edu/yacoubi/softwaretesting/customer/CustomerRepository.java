@@ -11,6 +11,6 @@ public interface CustomerRepository extends CrudRepository<Customer, UUID> {
 
     @Query(value = "SELECT id, name, phone_number FROM customer " +
             "WHERE phone_number = :phone_number", nativeQuery = true)
-    public Optional<Customer> selectCustomerByPhoneNumber(
+    Optional<Customer> selectCustomerByPhoneNumber(
             @Param("phone_number") String phoneNumber);
 }

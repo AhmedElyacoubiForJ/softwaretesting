@@ -25,7 +25,7 @@ class PaymentRepositoryTest {
         // Given
         long paymentId = 1L;
         Payment payment = new Payment(
-                null,
+                paymentId,
                 UUID.randomUUID(),
                 new BigDecimal("10.00"),
                 Currency.USD,

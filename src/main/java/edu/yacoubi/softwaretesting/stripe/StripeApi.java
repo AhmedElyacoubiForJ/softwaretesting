@@ -15,8 +15,12 @@ import java.util.Map;
 // So StripeApi delegate give the possibility to mock
 // our stripe service implementation
 public class StripeApi {
-    public Charge create(Map<String, Object> params, RequestOptions options)
-            throws StripeException {
+
+    public Charge create(
+                    Map<String,
+                    Object> params,
+                    RequestOptions options
+    ) throws StripeException {
         return Charge.create(params, options);
     }
 }

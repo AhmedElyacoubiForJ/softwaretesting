@@ -12,6 +12,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DataJpaTest(
+        // constraints must be triggered, before saving a Customer
+        // id not null, name not null...
         properties = {
                 "spring.jpa.properties.javax.persistence.validation.mode=none"
         }

@@ -1,21 +1,17 @@
 package edu.yacoubi.softwaretesting.customer;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class CustomerRegistrationService {
 
     private final CustomerRepository customerRepository;
-
-    @Autowired
-    public CustomerRegistrationService(CustomerRepository repository) {
-        this.customerRepository = repository;
-    }
 
     public void registerNewCustomer(CustomerRegistrationRequest request) {
         String phoneNumber = request.getCustomer().getPhoneNumber();

@@ -21,7 +21,7 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 
-// testing scenarios from bottom to top
+// testing scenarios from bottom to top (from happy path to customer not found)
 // equivalent to the service implementation
 @ExtendWith(MockitoExtension.class)
 class PaymentServiceTest {
@@ -32,7 +32,9 @@ class PaymentServiceTest {
     @Mock
     private PaymentRepository paymentRepository;
 
-    @Mock // is a interface & we will test it in isolation later
+    // is an interface & we will test it in isolation later
+    // so we can mock it first
+    @Mock
     private CardPaymentCharger cardPaymentCharger;
 
     private PaymentService underTest;
@@ -85,7 +87,7 @@ class PaymentServiceTest {
         // Then ... what can happen, we set the customer to the payment
         // And we save the payment
         // So the test must capture the payment and make sure that
-        // the customer set to it
+        // the customer set to it correctly
         ArgumentCaptor<Payment> paymentArgumentCaptor =
                 ArgumentCaptor.forClass(Payment.class);
 
@@ -95,15 +97,20 @@ class PaymentServiceTest {
 
         Payment paymentArgumentCaptorValue = paymentArgumentCaptor.getValue();
 
+        // testing line 75 s. paymentService
         assertThat(paymentArgumentCaptorValue)
                 .isEqualToIgnoringGivenFields(
                         request.getPayment(),
                         "customerId"
                 );
 
-        assertThat(paymentArgumentCaptorValue.getCustomerId()).isEqualTo(customerId);
+        assertThat(paymentArgumentCaptorValue.getCustomerId())
+                .isEqualTo(customerId);
     }
 
+    // so now that we've tested the happy path, let's go ahead
+    // and test that. If the card is not debited.
+    // We simply throw an exception
     @Test
     void itShouldThrowWhenCardIsNotCharged() {
         // Given
@@ -137,15 +144,16 @@ class PaymentServiceTest {
         // Then
         assertThatThrownBy(
                 () -> underTest.chargeCard(customerId, request)
-        )
-                .hasMessageContaining("Card not debited for customer " + customerId)
-                .isInstanceOf(IllegalStateException.class);
+        ).hasMessageContaining(
+                String.format("Card not debited for customer with id [%s]", customerId)
+        ).isInstanceOf(IllegalStateException.class);
 
         then(paymentRepository)
                 .should(never())
                 .save(any(Payment.class));
     }
 
+    // Let's go ahead and test when the currency is, not supported
     @Test
     void itShouldNotChargeCardAndThrowWhenCurrencyNoSupported() {
         // Given
@@ -171,7 +179,9 @@ class PaymentServiceTest {
         assertThatThrownBy(
                 () -> underTest.chargeCard(customerId, request)
         )
-                .hasMessageContaining("currency " + currency + " not supported")
+                .hasMessageContaining(
+                        String.format("currency [%s] not supported", currency)
+                )
                 .isInstanceOf(IllegalStateException.class);
 
         // Then
@@ -182,6 +192,7 @@ class PaymentServiceTest {
         then(paymentRepository).shouldHaveNoInteractions();
     }
 
+    // so what we need to test now is, when the customer not found.
     @Test
     void itShouldNotChargeAndThrowWhenCustomerNotFound() {
         // Given
@@ -192,9 +203,15 @@ class PaymentServiceTest {
 
         // When
         assertThatThrownBy(
-                () -> underTest.chargeCard(customerId, new PaymentRequest(new Payment()))
-        )
-                .hasMessageContaining("customer " + customerId +" not found")
+                () -> underTest.chargeCard(
+                        customerId,
+                        new PaymentRequest(new Payment())
+                ))
+                .hasMessageContaining(
+                        String.format(
+                                "customer with id [%s] not found",
+                                customerId
+                ))
                 .isInstanceOf(IllegalStateException.class);
 
         // Then

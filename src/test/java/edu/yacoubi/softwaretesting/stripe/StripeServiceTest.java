@@ -108,12 +108,13 @@ class StripeServiceTest {
         // When
         // Then
         assertThatThrownBy(
-                () -> underTest.chargeCard(cardSource,
+                () -> underTest.chargeCard(
+                        cardSource,
                         amount,
                         currency,
-                        description)
-        )
-                .isInstanceOf(IllegalStateException.class)
+                        description
+                )
+        ).isInstanceOf(IllegalStateException.class)
                 .hasRootCause(stripeException)
                 .hasMessageContaining("cannot make stripe charge");
     }

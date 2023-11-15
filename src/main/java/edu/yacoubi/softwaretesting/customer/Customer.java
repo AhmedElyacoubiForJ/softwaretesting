@@ -10,7 +10,12 @@ import javax.validation.constraints.NotBlank;
 import java.util.UUID;
 
 @Entity
-@JsonIgnoreProperties(value = {"id"}, allowGetters = true)
+@JsonIgnoreProperties(
+        // to ignore any id coming from client
+        // to give a service a full control to generate it.
+        value = {"id"},
+        allowGetters = true
+)
 public class Customer {
 
     @Id

@@ -1,11 +1,14 @@
 package edu.yacoubi.softwaretesting.payment;
 
-public class CardPaymentCharge {
-    private boolean isCardDebited;
+import lombok.RequiredArgsConstructor;
 
-    public CardPaymentCharge(boolean isCardDebited) {
-        this.isCardDebited = isCardDebited;
-    }
+@RequiredArgsConstructor
+public class CardPaymentCharge {
+    private final boolean isCardDebited;
+
+   // public CardPaymentCharge(boolean isCardDebited) {
+    //    this.isCardDebited = isCardDebited;
+   // }
 
     public boolean isCardDebited() {
         return isCardDebited;

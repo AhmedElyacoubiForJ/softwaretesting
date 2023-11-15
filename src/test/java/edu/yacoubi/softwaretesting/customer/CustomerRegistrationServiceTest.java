@@ -47,7 +47,7 @@ class CustomerRegistrationServiceTest {
     }
 
     @Test
-    void itShouldSaveNewCustomer() {
+    void itShouldSaveNewCustomer() { // testing the happy path
         // Given a phone number and a customer
         String phoneNumber = "000099";
         Customer customer =
@@ -59,6 +59,7 @@ class CustomerRegistrationServiceTest {
         // When a service call a mock repository it will return
         // an empty optional
         // ... no customer with phone number passed
+        // we mocked the return
         given(customerRepository
                 .selectCustomerByPhoneNumber(phoneNumber)
         ).willReturn(Optional.empty());
@@ -66,7 +67,7 @@ class CustomerRegistrationServiceTest {
         // when
         underTest.registerNewCustomer(request);
 
-        // Then
+        // Then (when empty should save)
         then(customerRepository).should().save(customerArgumentCaptor.capture());
         Customer customerArgumentCaptorValue = customerArgumentCaptor.getValue();
         assertThat(customerArgumentCaptorValue).isEqualTo(customer);
@@ -149,7 +150,7 @@ class CustomerRegistrationServiceTest {
         // ... a request
         CustomerRegistrationRequest request = new CustomerRegistrationRequest(customer);
 
-        // ... No customer with phone number passed
+        // ... There is a customer with phone number passed
         given(customerRepository.selectCustomerByPhoneNumber(phoneNumber))
                 .willReturn(Optional.of(customerTwo));
 
