@@ -11,16 +11,14 @@ import java.util.Map;
 // reason to implement this delegate service
 // is we cannot test a static create method or to mock it
 // And we will not add other frameworks for these issue
-// to prevent adding other dependencies (like PowerMock).
+// to prevent adding or manage other dependencies (like PowerMock).
 // So StripeApi delegate give the possibility to mock
 // our stripe service implementation
 public class StripeApi {
-
     public Charge create(
-                    Map<String,
-                    Object> params,
-                    RequestOptions options
-    ) throws StripeException {
+                    Map<String, Object> params,
+                    RequestOptions options) throws StripeException {
+
         return Charge.create(params, options);
     }
 }

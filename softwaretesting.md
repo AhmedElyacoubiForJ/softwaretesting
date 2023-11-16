@@ -6,7 +6,9 @@
 * [Learn Unit Testing and Integration Testing](https://www.youtube.com/watch?v=Geq60OVyBPg)
 
 ### Stripe API documentation
+*  https://stripe.com/docs
 *  [API Reference](https://stripe.com/docs/api)
+*  [Tour durch die API](https://stripe.com/docs/payments/tour?locale=de-DE)
 
 ### Stripe payment integration Tutorial
 *  [Live Coding](https://www.youtube.com/watch?v=BIDNKRluql4&t=568s)

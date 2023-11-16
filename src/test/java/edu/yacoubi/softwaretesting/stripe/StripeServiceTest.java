@@ -60,10 +60,10 @@ class StripeServiceTest {
                 );
 
         // Then
-        ArgumentCaptor<Map<String, Object>> mapArgumentCaptor = ArgumentCaptor
-                .forClass(Map.class);
-        ArgumentCaptor<RequestOptions> optionsArgumentCaptor = ArgumentCaptor
-                .forClass(RequestOptions.class);
+        ArgumentCaptor<Map<String, Object>> mapArgumentCaptor =
+                ArgumentCaptor.forClass(Map.class);
+        ArgumentCaptor<RequestOptions> optionsArgumentCaptor =
+                ArgumentCaptor.forClass(RequestOptions.class);
 
         // Captor requestMap and options
         then(stripeApi)

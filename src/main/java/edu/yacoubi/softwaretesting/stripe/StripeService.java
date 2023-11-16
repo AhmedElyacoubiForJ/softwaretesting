@@ -15,11 +15,18 @@ import java.util.Map;
 
 @Service
 // implementation according to stripe api reference with some adjustment
+// So currently we've implemented the payment unit.
+// Right here, we fully tested. and we know our business logic works in isolation
+// from the StripeService implementation.
+// Let's go ahead and create a service that will interact with Stripe
+// we can write a backend system that will use stripe to take payments.
+// we have to define the actual api key And then we create a charge And
+// then we pass some options
 public class StripeService implements CardPaymentCharger {
 
     public final StripeApi stripeApi;
 
-    private final RequestOptions requestOptions = RequestOptions
+    private final static RequestOptions requestOptions = RequestOptions
             .builder()
             .setApiKey("sk_test_4eC39HqLyjWDarjtT1zdp7dc")
             .build();
@@ -43,6 +50,22 @@ public class StripeService implements CardPaymentCharger {
         params.put("description", description);
 
         try {
+            // we are actually trying to connect to the real Stripe API
+            // So we try to make network call. We should never do this in unit.
+            // Testing Unit testing, we shouldn't really be calling out to the real Services.
+            // Because the point of unit testing is that things should be as fast as possible.
+            // Unit testing must be self-isolated. So Charge.create this work. So we don't have to test
+            // because we are just using their API.
+            // Only when we deploy to an environment And then we can test it with test cards or real cards,
+            // but not for unit testing.
+
+            // Another problem that we have is that this is a static method.
+            // There is no way for us to mock this static method.
+            // so we two options one, we could use an external framework
+            // that allows to mock static methods, or we can solve the problem s. StripeApi
+            // removed this call Charge.create(params, options);
+            // And replaced with a delegate StripeApi class,
+            // problem solved and so, we can test our service, and we can mock the StripeApi class.
             Charge charge = stripeApi.create(params, requestOptions);
             return new CardPaymentCharge(charge.getPaid());
         } catch (StripeException e) {
