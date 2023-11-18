@@ -13,6 +13,10 @@
 ### Stripe payment integration Tutorial
 *  [Live Coding](https://www.youtube.com/watch?v=BIDNKRluql4&t=568s)
 
+### How to send sms using Twilio API
+* [Tutorial](https://www.youtube.com/watch?v=OuBttmaPlhM)
+
+
 ### intellij shortcuts
 * navigate between class and test class **Ctrl Shift T**
 * create a test class to the actual class **Alt insert**

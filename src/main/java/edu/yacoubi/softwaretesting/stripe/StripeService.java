@@ -6,14 +6,14 @@ import com.stripe.net.RequestOptions;
 import edu.yacoubi.softwaretesting.payment.CardPaymentCharge;
 import edu.yacoubi.softwaretesting.payment.CardPaymentCharger;
 import edu.yacoubi.softwaretesting.payment.Currency;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-@Service
 // implementation according to stripe api reference with some adjustment
 // So currently we've implemented the payment unit.
 // Right here, we fully tested. and we know our business logic works in isolation
@@ -22,6 +22,12 @@ import java.util.Map;
 // we can write a backend system that will use stripe to take payments.
 // we have to define the actual api key And then we create a charge And
 // then we pass some options
+@Service
+@ConditionalOnProperty(
+        value = "stripe.enabled",
+        havingValue = "true"
+)
+@RequiredArgsConstructor
 public class StripeService implements CardPaymentCharger {
 
     public final StripeApi stripeApi;
@@ -30,11 +36,6 @@ public class StripeService implements CardPaymentCharger {
             .builder()
             .setApiKey("sk_test_4eC39HqLyjWDarjtT1zdp7dc")
             .build();
-
-    @Autowired
-    public StripeService(StripeApi stripeApi) {
-        this.stripeApi = stripeApi;
-    }
 
     @Override
     public CardPaymentCharge chargeCard(
@@ -54,7 +55,8 @@ public class StripeService implements CardPaymentCharger {
             // So we try to make network call. We should never do this in unit.
             // Testing Unit testing, we shouldn't really be calling out to the real Services.
             // Because the point of unit testing is that things should be as fast as possible.
-            // Unit testing must be self-isolated. So Charge.create this work. So we don't have to test
+            // Unit testing must be self-isolated.
+            // We know that Charge.create work, so we don't have to test it
             // because we are just using their API.
             // Only when we deploy to an environment And then we can test it with test cards or real cards,
             // but not for unit testing.

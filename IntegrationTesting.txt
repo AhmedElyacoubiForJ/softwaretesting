@@ -1,0 +1,9 @@
+So we want to make sure that all application components work together.
+We have to create an integration test and integration test, simply means that we have
+the application up in running.
+So we fire up the application, and we make sure that we write code that act as a client.
+1. register customer
+2. customer tries to make a payment
+
+So we're trying to test through the entire application, interaction between all the components
+of the application.

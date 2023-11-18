@@ -13,12 +13,13 @@ import java.util.UUID;
 @JsonIgnoreProperties(
         // to ignore any id coming from client
         // to give a service a full control to generate it.
-        value = {"id"},
+        //value = {"id"}, // but we need it for integration testing
         allowGetters = true
 )
 public class Customer {
 
     @Id
+    @Column(columnDefinition = "uuid")
     private UUID id;
 
     @NotBlank
@@ -62,5 +63,14 @@ public class Customer {
 
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
     }
 }
