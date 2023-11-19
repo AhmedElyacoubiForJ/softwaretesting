@@ -1,25 +1,19 @@
 package edu.yacoubi.softwaretesting;
 
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
+import edu.yacoubi.softwaretesting.twilio.TwilioConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.CommandLineRunner;
 
-import com.twilio.Twilio;
-import com.twilio.rest.api.v2010.account.Message;
-import com.twilio.type.PhoneNumber;
-
 @SpringBootApplication
 public class Main implements CommandLineRunner {
 
-	public static final String ACCOUNT_SID =
-			System.getenv("TWILIO_ACCOUNT_SID");
-	public static final String AUTH_TOKEN =
-			System.getenv("TWILIO_AUTH_TOKEN");
-
-	public static final String FROM_TWILIO_PHONE_NUMBER =
-			System.getenv("TWILIO_PHONE_NUMBER");
-	public static final String TO_PHONE_NUMBER =
-			System.getenv("MY_PHONE_NUMBER");
+	@Autowired
+	private TwilioConfiguration twilioConfiguration;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Main.class, args);
@@ -27,17 +21,31 @@ public class Main implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+		// A good way to mock out any interaction with Twilio
+		// would be to create your own class (MockClient) that extends HttpClient.
+		// Then you would create a new TwilioRestClient that uses your MockClient.
+		// Now if you use the new TwilioRestClient you can have the MockClient
+		// return whatever response that you would like!
+
+
+		/*Twilio.init(
+				twilioConfiguration.getAccountSid(),
+				twilioConfiguration.getAuthToken()
+		);
+		String to = twilioConfiguration.getToPhoneNumber();
+		String fromTwilio = twilioConfiguration.getFromTwilioPhoneNumber();
+		String sms = "Testing twilio from Spring Boot application";
+
+		PhoneNumber toPhoneNumber = new PhoneNumber(to);
+		PhoneNumber fromTwilioPhoneNumber = new PhoneNumber(fromTwilio);
+
 		Message message = Message.creator(
-						new PhoneNumber(TO_PHONE_NUMBER),
-						new PhoneNumber(FROM_TWILIO_PHONE_NUMBER),
-						"Testing twilio from Spring Boot application"
-		).create();
+				toPhoneNumber,
+				fromTwilioPhoneNumber,
+				sms
+		).create();*/
 
-		System.out.println("ACCOUNT_SID : " + ACCOUNT_SID);
-		System.out.println("AUTH_TOKEN : " + AUTH_TOKEN);
 
-		System.out.println("TWILIO_PHONE_NUMBER : " + FROM_TWILIO_PHONE_NUMBER);
-		System.out.println("MY_PHONE_NUMBER : " + TO_PHONE_NUMBER);
+		System.out.println("TwilioConfiguration: " + twilioConfiguration);
 	}
 }
