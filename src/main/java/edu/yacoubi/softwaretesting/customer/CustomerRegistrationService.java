@@ -1,5 +1,6 @@
 package edu.yacoubi.softwaretesting.customer;
 
+import edu.yacoubi.softwaretesting.utils.PhoneNumberValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +12,16 @@ import java.util.UUID;
 public class CustomerRegistrationService {
 
     private final CustomerRepository customerRepository;
+    private final PhoneNumberValidator phoneNumberValidator;
 
     public void registerNewCustomer(CustomerRegistrationRequest request) {
         String phoneNumber = request.getCustomer().getPhoneNumber();
+
+        if (!phoneNumberValidator.test(phoneNumber)) {
+            throw new IllegalStateException(
+                    String.format("Phone Number [%s] is not valid", phoneNumber)
+            );
+        }
 
         Optional<Customer> optionalCustomer = customerRepository
                 .selectCustomerByPhoneNumber(phoneNumber);

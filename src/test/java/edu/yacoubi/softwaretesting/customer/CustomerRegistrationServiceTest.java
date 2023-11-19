@@ -1,5 +1,6 @@
 package edu.yacoubi.softwaretesting.customer;
 
+import edu.yacoubi.softwaretesting.utils.PhoneNumberValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,6 +27,9 @@ class CustomerRegistrationServiceTest {
     @Mock
     private CustomerRepository customerRepository;//  = mock(CustomerRepository.class);
 
+    @Mock
+    private PhoneNumberValidator phoneNumberValidator;
+
     @Captor
     private ArgumentCaptor<Customer> customerArgumentCaptor;
 
@@ -33,7 +37,11 @@ class CustomerRegistrationServiceTest {
 
     @BeforeEach
     void setUp() {
-        underTest = new CustomerRegistrationService(customerRepository);
+        underTest =
+                new CustomerRegistrationService(
+                        customerRepository,
+                        phoneNumberValidator
+                );
     }
 
     @Test
@@ -64,6 +72,9 @@ class CustomerRegistrationServiceTest {
                 .selectCustomerByPhoneNumber(phoneNumber)
         ).willReturn(Optional.empty());
 
+        // ...valid phone number
+        given(phoneNumberValidator.test(any())).willReturn(true);
+
         // when
         underTest.registerNewCustomer(request);
 
@@ -71,6 +82,32 @@ class CustomerRegistrationServiceTest {
         then(customerRepository).should().save(customerArgumentCaptor.capture());
         Customer customerArgumentCaptorValue = customerArgumentCaptor.getValue();
         assertThat(customerArgumentCaptorValue).isEqualTo(customer);
+    }
+
+    @Test
+    void itShouldNotSaveNewCustomerWhenPhoneNumberIsInValid() {
+        // Given a phone number and a customer
+        String phoneNumber = "000099";
+        Customer customer =
+                new Customer(UUID.randomUUID(), "joe", phoneNumber);
+        // ... request
+        CustomerRegistrationRequest request =
+                new CustomerRegistrationRequest(customer);
+
+        // ...valid phone number
+        given(phoneNumberValidator.test(any())).willReturn(false);
+
+        // When
+        // Then
+        assertThatThrownBy(
+                () -> underTest.registerNewCustomer(request))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining(
+                        String.format("Phone Number [%s] is not valid", phoneNumber)
+                );
+
+        // Finally
+        then(customerRepository).should(never()).save(any(Customer.class));
     }
 
     @Test
@@ -90,6 +127,9 @@ class CustomerRegistrationServiceTest {
         // ... No customer with phone number passed
         given(customerRepository.selectCustomerByPhoneNumber(phoneNumber))
                 .willReturn(Optional.empty());
+
+        // ...valid phone number
+        given(phoneNumberValidator.test(any())).willReturn(true);
 
         // When
         underTest.registerNewCustomer(request);
@@ -119,6 +159,9 @@ class CustomerRegistrationServiceTest {
         // ... an existing customer is returned
         given(customerRepository.selectCustomerByPhoneNumber(phoneNumber))
                 .willReturn(Optional.of(customer));
+
+        // ...valid phone number
+        given(phoneNumberValidator.test(any())).willReturn(true);
 
         // When
         underTest.registerNewCustomer(request);
@@ -153,6 +196,9 @@ class CustomerRegistrationServiceTest {
         // ... There is a customer with phone number passed
         given(customerRepository.selectCustomerByPhoneNumber(phoneNumber))
                 .willReturn(Optional.of(customerTwo));
+
+        // ...valid phone number
+        given(phoneNumberValidator.test(any())).willReturn(true);
 
         // When
         // Then

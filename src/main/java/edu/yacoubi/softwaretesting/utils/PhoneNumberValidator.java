@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.function.Predicate;
 
-//@Service
+@Service
 public class PhoneNumberValidator implements Predicate<String> {
 
     @Override
