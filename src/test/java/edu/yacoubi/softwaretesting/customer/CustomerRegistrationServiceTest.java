@@ -107,7 +107,8 @@ class CustomerRegistrationServiceTest {
                 );
 
         // Finally
-        then(customerRepository).should(never()).save(any(Customer.class));
+        then(customerRepository).shouldHaveNoInteractions();
+        //then(customerRepository).should(never()).save(any(Customer.class));
     }
 
     @Test
