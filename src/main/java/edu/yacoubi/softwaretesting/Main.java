@@ -1,6 +1,7 @@
 package edu.yacoubi.softwaretesting;
 
 import com.twilio.Twilio;
+import com.twilio.http.TwilioRestClient;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 import edu.yacoubi.softwaretesting.twilio.TwilioConfiguration;
@@ -45,7 +46,15 @@ public class Main implements CommandLineRunner {
 				sms
 		).create();*/
 
+		// A TwilioRestClient builder can take a custom instance of
+		// com.twilio.http.HttpClient.
+		// (This would be a good place to inject a mock for testing your calls
+		// to the Twilio API)
+//		TwilioRestClient cakeClient = new TwilioRestClient.Builder(
+//				twilioConfiguration.getAccountSid(),
+//				twilioConfiguration.getAuthToken())
+//				.build();
 
-		System.out.println("TwilioConfiguration: " + twilioConfiguration);
+		//System.out.println("TwilioConfiguration: " + twilioConfiguration);
 	}
 }
