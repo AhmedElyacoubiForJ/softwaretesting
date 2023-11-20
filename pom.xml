@@ -44,11 +44,11 @@
 			<version>9.2.5</version>
 		</dependency>
 
-		<dependency>
+		<!-- dependency>
 			<groupId>com.googlecode.libphonenumber</groupId>
 			<artifactId>libphonenumber</artifactId>
 			<version>8.13.12</version>
-		</dependency>
+		</dependency -->
 
 		<dependency>
 			<groupId>com.stripe</groupId>
@@ -64,6 +64,11 @@
 				<exclusion>
 					<groupId>org.junit.vintage</groupId>
 					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+
+				<exclusion>
+					<groupId>com.vaadin.external.google</groupId>
+					<artifactId>android-json</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
