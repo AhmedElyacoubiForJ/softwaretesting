@@ -13,9 +13,13 @@ public class TwilioInitializer {
 
     public TwilioInitializer(TwilioConfiguration twilioConf) {
         this.twilioConf = twilioConf;
-        Twilio.init(
-                twilioConf.getAccountSid(),
-                twilioConf.getAuthToken()
+//        Twilio.init(
+//                twilioConf.getAccountSid(),
+//                twilioConf.getAuthToken()
+//        );
+        log.info(
+                "Environment variables...  {}",
+                twilioConf
         );
         log.info(
                 "twilio initialized... with account sid {}",

@@ -3,7 +3,6 @@ package edu.yacoubi.softwaretesting.twilio;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 @RequiredArgsConstructor
