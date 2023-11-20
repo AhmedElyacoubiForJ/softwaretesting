@@ -9,17 +9,17 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class TwilioInitializer {
     @Autowired
-    private final TwilioConfiguration twilioConfiguration;
+    private final TwilioConfiguration twilioConf;
 
-    public TwilioInitializer(TwilioConfiguration twilioConfiguration) {
-        this.twilioConfiguration = twilioConfiguration;
+    public TwilioInitializer(TwilioConfiguration twilioConf) {
+        this.twilioConf = twilioConf;
         Twilio.init(
-                twilioConfiguration.getAccountSid(),
-                twilioConfiguration.getAuthToken()
+                twilioConf.getAccountSid(),
+                twilioConf.getAuthToken()
         );
         log.info(
                 "twilio initialized... with account sid {}",
-                twilioConfiguration.getAccountSid()
+                twilioConf.getAccountSid()
         );
     }
 }
