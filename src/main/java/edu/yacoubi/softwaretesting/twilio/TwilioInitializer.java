@@ -13,16 +13,16 @@ public class TwilioInitializer {
 
     public TwilioInitializer(TwilioConfiguration twilioConf) {
         this.twilioConf = twilioConf;
-//        Twilio.init(
-//                twilioConf.getAccountSid(),
-//                twilioConf.getAuthToken()
-//        );
         log.info(
-                "Environment variables...  {}",
-                twilioConf
+                "Start: twilio init... with account sid {}",
+                twilioConf.getAccountSid()
+        );
+        Twilio.init(
+                twilioConf.getAccountSid(),
+                twilioConf.getAuthToken()
         );
         log.info(
-                "twilio initialized... with account sid {}",
+                "End: twilio initialized... with account sid {}",
                 twilioConf.getAccountSid()
         );
     }

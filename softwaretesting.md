@@ -24,3 +24,4 @@
 * navigate between class and test class **Ctrl Shift T**
 * create a test class to the actual class **Alt insert**
 * how to inline variables **Ctrl Alt N**
+* view Quick Documentation **Ctrl Q**

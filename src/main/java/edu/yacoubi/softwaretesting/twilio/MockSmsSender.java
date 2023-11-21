@@ -8,6 +8,6 @@ import org.springframework.stereotype.Service;
 public class MockSmsSender implements SmsSender {
     @Override
     public void sendSms(SmsRequest smsRequest) {
-        log.info("MockSmsSender: Send sms {}", smsRequest);
+        log.info("MockSmsSender: sendSms ({})", smsRequest);
     }
 }
